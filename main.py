@@ -3,17 +3,18 @@ import discord
 from discord.ext import commands
 from discord.ui import Button, View
 from dotenv import load_dotenv
-# helo
-# load frmo .env
+import google.generativeai as genai
+
+# load from .env
 load_dotenv()
 
-# bot token frmo env
+# bot token from env
 DISCORD_BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 
-# wip user choice remembering, somewhat working, different users can use different models at the same time
+# potential user choice remembering
 user_models = {}
 
-# conf model
+# model config
 generation_config = {
     "temperature": 0.9,
     "top_p": 1,
@@ -21,7 +22,7 @@ generation_config = {
     "response_mime_type": "text/plain",
 }
 
-# reset model
+# Default model setup, if necessary
 model = None
 
 # bot setup
@@ -39,20 +40,20 @@ async def on_ready():
 class MyView(View):
     @discord.ui.button(label="Nachiket", style=discord.ButtonStyle.primary)
     async def set_nachiket(self, interaction: discord.Interaction, button: Button):
-        # Nachiket model
+        # nachiket model
         user_models[interaction.user.id] = 'tunedModels/big-nachi-cz3x2g4q1xag'
         await interaction.response.send_message("Personality set to 'Nachiket'.", ephemeral=True)
 
     @discord.ui.button(label="Regular old gemini", style=discord.ButtonStyle.secondary)
     async def set_gemini(self, interaction: discord.Interaction, button: Button):
-        # Regular gemini model
+        # regular gemini model
         user_models[interaction.user.id] = 'gemini-1.5-flash'
         await interaction.response.send_message("Personality set to 'Regular old gemini'.", ephemeral=True)
 
 
 @bot.command()
 async def stop(ctx):
-    # Reset model
+    # reset model
     user_id = ctx.author.id
     if user_id in user_models:
         del user_models[user_id]
@@ -64,9 +65,9 @@ async def stop(ctx):
 @bot.event
 async def on_message(message):
     if message.author == bot.user:
-        return  # Ignore self messages
+        return  # ignore self messages
 
-    await bot.process_commands(message)  #pProcesses commands so that they get processed before being processed
+    await bot.process_commands(message)  # processes commands before so that they get processed
 
     if message.content.strip() == '!start':
         view = MyView()
@@ -110,5 +111,5 @@ async def on_message(message):
         print(f"Ignored message: {message.content}")
 
 
-# run with token frmo env
+# run with token from env
 bot.run(DISCORD_BOT_TOKEN)
