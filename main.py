@@ -11,7 +11,7 @@ load_dotenv()
 # bot token from env
 DISCORD_BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 
-# potential user choice remembering
+# potential user choice remembering, W.I.P, different users can have different conversations with different models concurrently without problem
 user_models = {}
 
 # model config
