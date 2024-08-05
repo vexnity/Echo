@@ -11,11 +11,7 @@ load_dotenv()
 # Bot token from env
 DISCORD_BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 
-<<<<<<< Updated upstream
-# potential user choice remembering, W.I.P, different users can have different conversations with different models concurrently without problem
-=======
 # Potential user choice remembering and conversation history
->>>>>>> Stashed changes
 user_models = {}
 conversation_history = {}  # Keyed by user ID
 
